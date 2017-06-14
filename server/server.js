@@ -4,6 +4,7 @@ const _ = require('lodash');
 
 const {mongoose} = require('./db/mongoose');
 const {User} = require('./models/user');
+const {Poll} = require('./models/poll');
 const {authenticate} = require('./middleware/authenticate');
 
 let app = express();
@@ -28,7 +29,7 @@ app.get('/users/me', authenticate, (req, res) => {
 });
 
 app.post('/users/login', (req, res) => {
-    var body = _.pick(req.body, ['name', 'password']);
+    let body = _.pick(req.body, ['name', 'password']);
 
     User.findByCredentials(body.name, body.password).then((user) => {
         return user.generateAuthToken().then((token) => {
@@ -46,6 +47,20 @@ app.delete('/users/me/token', authenticate, (req, res) => {
         res.status(400).send();
     });
 });
+
+app.post('/polls', authenticate, (req, res) => {
+    let poll = new Poll({
+        question: req.body.question,
+        options: req.body.options,
+        _creator: req.user._id
+    });
+
+    poll.save().then((poll) => {
+        res.send(poll);
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
+})
 
 app.listen(port, () => {
     console.log(`Server up on port ${port}`);

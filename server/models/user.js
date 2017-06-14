@@ -53,7 +53,7 @@ UserSchema.methods.removeToken = function(token) {
     return user.update({
         $pull: {
             tokens: {
-                token: token
+                token
             }
         }
     });
