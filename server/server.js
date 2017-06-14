@@ -60,7 +60,25 @@ app.post('/polls', authenticate, (req, res) => {
     }).catch((e) => {
         res.status(400).send(e);
     });
-})
+});
+
+app.get('/polls', (req, res) => {
+    Poll.find().sort('-_id').then((polls) => {
+        res.send(polls);
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
+});
+
+app.get('/polls/me', authenticate, (req, res) => {
+    Poll.find({
+        _creator: req.user._id
+    }).sort('-_id').then((polls) => {
+        res.send(polls);
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
+});
 
 app.listen(port, () => {
     console.log(`Server up on port ${port}`);
