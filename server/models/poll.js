@@ -13,7 +13,10 @@ const PollSchema = new mongoose.Schema({
             required: true,
             minlength: 1,
         },
-        votes: Number
+        votes: {
+            type: Number,
+            default: 0
+        }
     }],
     _creator: {
         type: mongoose.Schema.Types.ObjectId,

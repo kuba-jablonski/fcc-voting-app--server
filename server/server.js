@@ -91,9 +91,47 @@ app.get('/polls/:id', (req, res) => {
         res.send(poll);
     }, (e) => {
         res.status(400).send();
-    }).catch((e) => {
-        res.status.send(e);
     });
+});
+
+app.delete('/polls/me/:id', authenticate, (req, res) => {
+    const id = req.params.id;
+
+    Poll.findOneAndRemove({
+        _id: id,
+        _creator: req.user._id
+    }).then((poll) => {
+        if (!poll) {
+            res.status(404).send();
+        }
+        res.send(poll);
+    }, (e) => {
+        res.status(400).send();
+    });
+});
+
+// !!!
+app.patch('/polls/:id/:optionId', (req, res) => {
+    const id = req.params.id;
+    const optionId = req.params.optionId;
+
+    Poll.findOneAndUpdate({
+        _id: id,
+        'options._id': optionId
+    }, {
+        $inc: {
+            'options.$.votes': 1
+        }
+    }, {
+        new: true
+    }).then((poll) => {
+        if (!poll) {
+            res.status(404).send();
+        }
+        res.send(poll);
+    }, (e) => {
+        res.status(400).send();
+    });  
 });
 
 app.listen(port, () => {
