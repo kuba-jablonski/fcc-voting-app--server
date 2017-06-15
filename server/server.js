@@ -110,7 +110,6 @@ app.delete('/polls/me/:id', authenticate, (req, res) => {
     });
 });
 
-// !!!
 app.patch('/polls/:id/:optionId', (req, res) => {
     const id = req.params.id;
     const optionId = req.params.optionId;
@@ -120,7 +119,8 @@ app.patch('/polls/:id/:optionId', (req, res) => {
         'options._id': optionId
     }, {
         $inc: {
-            'options.$.votes': 1
+            'options.$.votes': 1,
+            totalVotes: 1
         }
     }, {
         new: true
