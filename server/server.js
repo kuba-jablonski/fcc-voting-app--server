@@ -80,6 +80,22 @@ app.get('/polls/me', authenticate, (req, res) => {
     });
 });
 
+app.get('/polls/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+
+    Poll.findById(id).then((poll) => {
+        if (!poll) {
+            res.status(404).send();
+        }
+        res.send(poll);
+    }, (e) => {
+        res.status(400).send();
+    }).catch((e) => {
+        res.status.send(e);
+    });
+});
+
 app.listen(port, () => {
     console.log(`Server up on port ${port}`);
 });
