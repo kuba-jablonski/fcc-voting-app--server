@@ -25,7 +25,8 @@ const PollSchema = new mongoose.Schema({
     totalVotes: {
         type: Number,
         default: 0
-    }
+    },
+    voters: [mongoose.Schema.Types.ObjectId]
 });
 
 PollSchema.methods.toJSON = function() {
@@ -34,6 +35,7 @@ PollSchema.methods.toJSON = function() {
 
     return _.pick(pollObject, ['_id', 'question', 'options', 'totalVotes']);
 }
+
 
 const Poll = mongoose.model('Poll', PollSchema);
 

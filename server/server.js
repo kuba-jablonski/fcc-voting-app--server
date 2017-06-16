@@ -110,17 +110,23 @@ app.delete('/polls/me/:id', authenticate, (req, res) => {
     });
 });
 
-app.patch('/polls/:id/:optionId', (req, res) => {
+app.patch('/polls/:id/:optionId', authenticate, (req, res) => {
     const id = req.params.id;
     const optionId = req.params.optionId;
 
     Poll.findOneAndUpdate({
         _id: id,
-        'options._id': optionId
+        'options._id': optionId,
+        voters: {
+            $ne: req.user._id
+        }
     }, {
         $inc: {
             'options.$.votes': 1,
             totalVotes: 1
+        },
+        $push: {
+            voters: req.user._id
         }
     }, {
         new: true
@@ -129,9 +135,9 @@ app.patch('/polls/:id/:optionId', (req, res) => {
             res.status(404).send();
         }
         res.send(poll);
-    }, (e) => {
+    }).catch((e) => {
         res.status(400).send();
-    });  
+    })
 });
 
 app.listen(port, () => {
