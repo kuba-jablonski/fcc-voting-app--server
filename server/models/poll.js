@@ -33,7 +33,7 @@ PollSchema.methods.toJSON = function() {
     let poll = this;
     let pollObject = poll.toObject();
 
-    return _.pick(pollObject, ['_id', 'question', 'options', 'totalVotes']);
+    return _.pick(pollObject, ['_id', 'question', 'options', 'totalVotes', 'voters']);
 }
 
 
