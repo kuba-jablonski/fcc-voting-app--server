@@ -22,6 +22,10 @@ const PollSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
+    creatorName: {
+        type: String,
+        required: true
+    },
     totalVotes: {
         type: Number,
         default: 0

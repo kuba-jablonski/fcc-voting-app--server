@@ -54,6 +54,7 @@ app.post('/polls', authenticate, (req, res) => {
     let poll = new Poll({
         question: req.body.question,
         options: req.body.options,
+        creatorName: req.user.name,
         _creator: req.user._id
     });
 
