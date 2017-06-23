@@ -23,8 +23,7 @@ const PollSchema = new mongoose.Schema({
         required: true
     },
     creatorName: {
-        type: String,
-        required: true
+        type: String
     },
     totalVotes: {
         type: Number,
