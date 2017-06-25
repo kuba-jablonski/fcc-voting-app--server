@@ -3,7 +3,6 @@ require('./config/config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
-const cors = require('cors')
 
 const {mongoose} = require('./db/mongoose');
 const {User} = require('./models/user');
@@ -13,9 +12,7 @@ const {authenticate} = require('./middleware/authenticate');
 let app = express();
 const port = process.env.PORT;
 
-app.use(cors());
 app.use(bodyParser.json());
-app.options('*', cors());
 
 app.post('/users', (req, res) => {
     let body = _.pick(req.body, ['name', 'password']);
