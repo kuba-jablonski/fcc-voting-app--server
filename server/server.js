@@ -13,6 +13,7 @@ const {authenticate} = require('./middleware/authenticate');
 let app = express();
 const port = process.env.PORT;
 
+app.use(cors());
 app.use(bodyParser.json());
 app.options('*', cors());
 
