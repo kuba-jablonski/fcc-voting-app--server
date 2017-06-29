@@ -117,7 +117,7 @@ app.patch('/polls/:id/:optionId', authenticate, (req, res) => {
     const id = req.params.id;
     const optionId = req.params.optionId;
 
-    Poll.findOneAndUpdate({
+    Poll.update({
         _id: id,
         'options._id': optionId,
         voters: {
@@ -133,11 +133,12 @@ app.patch('/polls/:id/:optionId', authenticate, (req, res) => {
         }
     }, {
         new: true
-    }).then((poll) => {
-        if (!poll) {
-            res.status(404).send();
-        }
-        res.send(poll);
+    }).then(() => {
+        Poll.find().sort('-_id').then((polls) => {
+            res.send(polls);
+        }).catch((e) => {
+            res.status(400).send(e);
+        });        
     }).catch((e) => {
         res.status(400).send();
     })
