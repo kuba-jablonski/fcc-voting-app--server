@@ -39,6 +39,12 @@ PollSchema.methods.toJSON = function() {
     return _.pick(pollObject, ['_id', 'question', 'options', 'totalVotes', 'voters', 'creatorName']);
 }
 
+PollSchema.statics.getPolls = function() {
+    let Poll = this;
+
+    return Poll.find().sort('-_id');
+}
+
 
 const Poll = mongoose.model('Poll', PollSchema);
 

@@ -58,8 +58,10 @@ app.post('/polls', authenticate, (req, res) => {
         _creator: req.user._id
     });
 
-    poll.save().then((poll) => {
-        res.send(poll);
+    poll.save().then(() => {
+        Poll.find().sort('-_id').then((polls) => {
+            res.send(polls);
+        });
     }).catch((e) => {
         res.status(400).send(e);
     });
@@ -136,9 +138,7 @@ app.patch('/polls/:id/:optionId', authenticate, (req, res) => {
     }).then(() => {
         Poll.find().sort('-_id').then((polls) => {
             res.send(polls);
-        }).catch((e) => {
-            res.status(400).send(e);
-        });        
+        });       
     }).catch((e) => {
         res.status(400).send();
     })
