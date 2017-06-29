@@ -106,13 +106,10 @@ app.delete('/polls/me/:id', authenticate, (req, res) => {
         _id: id,
         _creator: req.user._id
     }).then((poll) => {
-        if (!poll) {
-            res.status(404).send();
-        }
-        res.send(poll);
-    }, (e) => {
-        res.status(400).send();
-    });
+        Poll.find().sort('-_id').then((polls) => {
+            res.send(polls);
+        }); 
+    }).catch(e => res.send(e));
 });
 
 app.patch('/polls/:id/:optionId', authenticate, (req, res) => {
